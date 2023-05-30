@@ -10,7 +10,6 @@ export default function ResultContainer() {
     if (taskHours) {
       setSuccess(taskHours.available > taskHours.required);
     }
-    console.log(taskHours);
   }, [taskHours]);
 
   if (taskHours === null) {
@@ -19,8 +18,8 @@ export default function ResultContainer() {
 
   return (
     <div
-      className={`flex flex-col gap-4 bg-white w-full max-w-xl shadow-md rounded-lg p-5 px-4 sm:px-6 lg:px-8 ${
-        success ? 'bg-green-100' : 'bg-red-100'
+      className={`flex flex-col gap-4 w-full max-w-xl shadow-md rounded-lg p-5 px-4 sm:px-6 lg:px-8 ${
+        success ? 'bg-green-200' : 'bg-red-200'
       }`}
     >
       {success ? (

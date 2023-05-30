@@ -20,11 +20,20 @@ export interface TaskHours {
 }
 
 export default function InputContainer() {
-  const { register, handleSubmit, watch } = useForm<Inputs>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
   const dispatch = useAppDispatch();
+
+  const maxSleepHours = 24 - +watch('busyHours');
+  const maxBusyHours = 24 - +watch('sleepHours');
 
   const onSubmit: SubmitHandler<Inputs> = (data): void => {
     const { date, requiredTime, busyHours, sleepHours } = data;
+
     const currentDate = new Date();
     const targetDate = new Date(date);
     const daysLeft = Math.ceil(
@@ -76,8 +85,6 @@ export default function InputContainer() {
     dispatch(setTaskHours(taskHours));
   };
 
-  console.log(watch('date'));
-
   return (
     <div className="flex flex-col justify-center items-center gap-4 bg-white w-full max-w-xl shadow-md rounded-lg p-5">
       <h1 className="font-medium">Starting data</h1>
@@ -101,10 +108,12 @@ export default function InputContainer() {
           </label>
           <input
             required
-            {...register('requiredTime', { required: true })}
+            {...register('requiredTime', {
+              required: true,
+              min: 0,
+            })}
             className="rounded-md p-2 border"
             type="number"
-            min={0}
           />
         </div>
         <div className="w-full box-border flex flex-col text-start">
@@ -113,11 +122,21 @@ export default function InputContainer() {
           </label>
           <input
             required
-            {...register('busyHours', { required: true })}
+            {...register('busyHours', {
+              required: true,
+              min: 0,
+              max: {
+                value: maxBusyHours,
+                message:
+                  'You cannot sleep and remain busy for more than 24 hours.',
+              },
+            })}
             className="rounded-md p-2 border"
             type="number"
-            min={0}
           />
+          {errors.busyHours?.message && (
+            <p className=" text-red-500">{errors.busyHours?.message}</p>
+          )}
         </div>
         <div className="w-full box-border flex flex-col text-start">
           <label className="mb-1 text-base">
@@ -125,11 +144,21 @@ export default function InputContainer() {
           </label>
           <input
             required
-            {...register('sleepHours', { required: true })}
+            {...register('sleepHours', {
+              required: true,
+              min: 0,
+              max: {
+                value: maxSleepHours,
+                message:
+                  'You cannot sleep and remain busy for more than 24 hours.',
+              },
+            })}
             className="rounded-md p-2 border"
             type="number"
-            min={0}
           />
+          {errors.sleepHours?.message && (
+            <p className=" text-red-500">{errors.sleepHours?.message}</p>
+          )}
         </div>
 
         <button
