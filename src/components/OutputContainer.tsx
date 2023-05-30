@@ -1,50 +1,8 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../app/store';
-import { updateHours } from '../redux/data.slice';
-import { StorageItem, TaskHours } from './InputContainer';
 
 export default function OutputContainer() {
   const data = useSelector((state: RootState) => state.data.storageItems);
-  const taskHours = useSelector((state: RootState) => state.data.taskHours);
-  const dispatch = useDispatch();
-
-  const handleIncrement = (day: StorageItem, field: keyof StorageItem) => {
-    const updatedData: StorageItem[] = data.map((item) => {
-      if (item.date === day.date) {
-        return {
-          ...item,
-          [field]: +item[field] + 1,
-        };
-      }
-      return item;
-    });
-    const updatedTaskHours: TaskHours = {
-      ...taskHours!,
-      available: taskHours!.available - 1,
-    };
-    dispatch(
-      updateHours({ storageItems: updatedData, taskHours: updatedTaskHours })
-    );
-  };
-
-  const handleDecrement = (day: StorageItem, field: keyof StorageItem) => {
-    const updatedData: StorageItem[] = data.map((item) => {
-      if (item.date === day.date) {
-        return {
-          ...item,
-          [field]: +item[field] - 1,
-        };
-      }
-      return item;
-    });
-    const updatedTaskHours: TaskHours = {
-      ...taskHours!,
-      available: taskHours!.available + 1,
-    };
-    dispatch(
-      updateHours({ storageItems: updatedData, taskHours: updatedTaskHours })
-    );
-  };
 
   if (data.length === 0) {
     return null;
@@ -94,21 +52,7 @@ export default function OutputContainer() {
                       {day.sleepHours}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      <div className="flex">
-                        <button
-                          onClick={() => handleDecrement(day, 'busyHours')}
-                          className="mr-2"
-                        >
-                          -
-                        </button>
-                        {day.busyHours}
-                        <button
-                          onClick={() => handleIncrement(day, 'busyHours')}
-                          className="ml-2"
-                        >
-                          +
-                        </button>
-                      </div>
+                      {day.busyHours}
                     </td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                       {day.studyHours}
