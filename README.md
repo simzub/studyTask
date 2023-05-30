@@ -7,4 +7,4 @@ Welcome to the studytask! This application is designed to provide you with a con
 2. Input your desired date into the designated field.
 3. Click the "Submit" button to generate the result.
 4. The app will display the result along with a comprehensive time schedule, providing you with all the necessary information.
-Feel free to explore the app and experiment with different dates to get precise results. It's that easy!
+
